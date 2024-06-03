@@ -2,12 +2,17 @@ package main;
 
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
+
 import audio.AudioPlayer;
+import gamestates.Choice;
+import gamestates.Credits;
 import gamestates.GameOptions;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
 import ui.AudioOptions;
+import utilz.LoadSave;
 
 public class Game implements Runnable {
 
@@ -18,7 +23,9 @@ public class Game implements Runnable {
 	private final int UPS_SET = 200;
 	
 	private Playing playing;
+	private Choice choice;
 	private Menu menu;
+	private Credits credits;
 	private AudioOptions audioOptions;
 	private GameOptions gameOptions;
 	private AudioPlayer audioPlayer;
@@ -38,15 +45,18 @@ public class Game implements Runnable {
 		gameWindow = new GameWindow(gamePanel);
 		gamePanel.setFocusable(true);
 		gamePanel.requestFocus();
-		gamePanel.requestFocusInWindow();
+		gamePanel.requestFocusInWindow(); 
+		
 		startGameLoop();
 	}
 
 	private void initClasses() {
+		choice = new Choice(this);
 		audioOptions = new AudioOptions(this);
 		audioPlayer = new AudioPlayer();
 		menu = new Menu(this);
 		playing = new Playing(this);
+		credits = new Credits(this);
 		gameOptions = new GameOptions(this);
 	}
 
@@ -56,41 +66,24 @@ public class Game implements Runnable {
 	}
 
 	public void update() {
-		
-		switch(Gamestate.state) {
-		case MENU:
-			menu.update();
-			break;
-		case PLAYING:
-			playing.update();
-			break;
-		case OPTIONS:
-			gameOptions.update();
-			break;
-		case QUIT:
-			System.exit(0);
-			break;
-		default:
-			System.exit(0);
-			break;
-		
+		switch (Gamestate.state) {
+		case CHOICE -> choice.update();
+		case MENU -> menu.update();
+		case PLAYING -> playing.update();
+		case OPTIONS -> gameOptions.update();
+		case CREDITS -> credits.update();
+		case QUIT -> System.exit(0);
 		}
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public void render(Graphics g) {
-		switch(Gamestate.state) {
-		case MENU:
-			menu.draw(g);
-			break;
-		case PLAYING:
-			playing.draw(g);
-			break;
-		case OPTIONS:
-			gameOptions.draw(g);
-			break;
-		default:
-			break;
-		
+		switch (Gamestate.state) {
+		case CHOICE -> choice.draw(g);
+		case MENU -> menu.draw(g);
+		case PLAYING -> playing.draw(g);
+		case OPTIONS -> gameOptions.draw(g);
+		case CREDITS -> credits.draw(g);
 		}
 	}
 
@@ -143,6 +136,10 @@ public class Game implements Runnable {
 		if(Gamestate.state == Gamestate.PLAYING) {
 			playing.getPlayer().resetDirBooleans();
 		}
+	}
+	
+	public Choice getChoice() {
+		return choice;
 	}
 	
 	public Menu getMenu() {

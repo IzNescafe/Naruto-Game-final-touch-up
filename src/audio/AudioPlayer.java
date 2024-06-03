@@ -32,7 +32,7 @@ public class AudioPlayer {
 	
 	private Clip[] songs, effects;
 	private int currentSongId;
-	private float volume = 1f;
+	private float volume = 0.5f;
 	private boolean songMute, effectMute;
 	private Random rand = new Random();
 	
@@ -43,7 +43,7 @@ public class AudioPlayer {
 	}
 	
 	private void loadSongs() {
-		String[] names = {"menu", "lvl1", "lvl2"};
+		String[] names = {"menu", "lvl1", "lvl2", "lvl3", "lvl4", "lvl5", "lvl6"};
 		songs = new Clip[names.length];
 		for(int i = 0; i < songs.length; i++) {
 			songs[i] = getClip(names[i]);

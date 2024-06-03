@@ -75,4 +75,8 @@ public abstract class Entity {
     public Rectangle2D.Float getBottomHitBox() {
         return bottomHitbox;
     }
+    
+    public int getCurrentHealth() {
+    	return currentHealth;
+    }
 }

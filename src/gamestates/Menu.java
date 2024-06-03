@@ -1,17 +1,18 @@
 package gamestates;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import main.Game;
+import ui.ChoiceButton;
 import ui.MenuButton;
 import utilz.LoadSave;
 
 public class Menu extends State implements Statemethods {
 	
+	private ChoiceButton choiceButton;
 	private MenuButton[] button = new MenuButton[3];
 	private BufferedImage backgroundImg, backgroundTheme;
 	private int menuX , menuY, menuWidth, menuHeight;
@@ -83,9 +84,12 @@ public class Menu extends State implements Statemethods {
 			if(isIn(e, mb)) {
 				if(mb.isMousePressed())
 					mb.applyGamestate();
-				if(mb.getState() == Gamestate.PLAYING)
+				if(mb.getState() == Gamestate.PLAYING) {
+					//choiceButton.getCode();
 					game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
-				break;
+				}
+					break;
+				
 			}
 		}
 		resetButtons();	

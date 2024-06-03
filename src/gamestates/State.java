@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 
 import audio.AudioPlayer;
 import main.Game;
+import ui.ChoiceButton;
 import ui.MenuButton;
 
 public class State {
@@ -21,17 +22,22 @@ public class State {
 		
 	}
 	
+	public boolean isIn(MouseEvent e, ChoiceButton cb) {
+		return cb.getBounds().contains(e.getX(), e.getY());
+	}
+	
 	public Game getGame() {
 		return game;
 	}
 	
-	public void setGameState(Gamestate state) {
-		switch(state) {
+	@SuppressWarnings("incomplete-switch")
+	public void setGamestate(Gamestate state) {
+		switch (state) {
+		case CHOICE -> game.getAudioPlayer().playSong(AudioPlayer.MENU);
 		case MENU -> game.getAudioPlayer().playSong(AudioPlayer.MENU);
 		case PLAYING -> game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
-		default -> throw new IllegalArgumentException("Unexpected value: " + state);
-			
 		}
+
 		Gamestate.state = state;
 	}
 
